@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Office of the City Veterinarian</title>
+    <link rel="stylesheet" href="OCVET-aboutUs.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://db.onlinewebfonts.com/c/b13def851d7a78ce98af9c8bc60e166d?family=Agrandir+Narrow" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo-text-wrapper">
+            <img id="ocvetlogo" src="ocvetlogo.png" alt="OCVET Logo">
+            <div class="text-container">
+                <h1><strong>OFICINA DE VETERENARIO CIUDAD DE ZAMBOANGA</strong></h1>
+                <p><i>Office of the City Veterinarian, Zamboanga City</i></p>
+            </div>
+        </div>
+        <div class="search-container" style="position: absolute; right: 20px; top: 35px;">
+            <div class="container">
+                <input type="text" name="text" class="search" required="" placeholder="Type to search...">
+                <div class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
+                        <title>Search</title>
+                        <path d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"></path>
+                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M338.29 338.29L448 448"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <div class="nav-logo">
+            <img src="ocvetlogo.png" alt="Nav Logo" style="width: 50px; height: 50px;">
+            <span class="nav-logo-text">OCVET</span>
+        </div>
+        <div class="nav-links">
+            <a href="OCVET-Homepage.html">HOME</a>
+            <a href="#about">ABOUT US</a>
+            <a href="OCVET-Homepage.html">FAQs</a>
+            <a href="index.html#programs">SPECIAL PROGRAMS</a>
+            <a href="index.html#news">NEWS</a>
+            <a href="#appointment" onclick="openModal()">LOGIN / SIGN UP</a>
+        </div>
+        <div class="nav-search"></div>
+    </nav>
+
+    <!-- Changed from .hero to .about-us-page since this is the About Us page -->
+    <section class="about-us-page">
+        <div class="aboutp">
+        <p>The Office of the City Veterinarian (OCVet) in Zamboanga City is committed to promoting 
+            animal health and public safety. Under the leadership of Dr. Mario D. Arriola, our team strives 
+            to deliver top-notch veterinary services to the community.</p>
+        </div>
+    </section>
+
+    <section class="mission-vision">
+        <div class="mission-vision-container">
+            <div class="mission">
+                <h2>MISSION</h2>
+                <p>To ensure the well-being of animals and safeguard public health through dedicated veterinary services and community education.</p>
+            </div>
+            <div class="vision">
+                <h2>VISION</h2>
+                <p>Community where all animals are healthy, cared for, and valued, contributing to the overall safety and harmony of Zamboanga City.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="location-contact">
+        <div class="location-contact-container">
+            <div class="location">
+                <h2>LOCATION & CONTACT INFORMATION</h2>
+                <div class="map">
+                    <!-- Interactive Google Map -->
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.629944795963!2d122.0492635740514!3d6.934755493065183!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x325041bad26d2a65%3A0xf1e7e669e64637e0!2sOffice%20of%20the%20City%20Veterinarian!5e0!3m2!1sen!2sph!4v1743337723460!5m2!1sen!2sph" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+            <div class="contact-info">
+                <p>W3M2+WP4, San Roque Rd, Zamboanga, Zamboanga Sibugay</p>
+                <hr>
+                <p><strong>CALL:</strong> (062) 985 0247</p>
+                <p><strong>EMAIL:</strong> <a href="mailto:ocvetzamboangacity@gmail.com">ocvetzamboangacity@gmail.com</a></p>
+                <p><strong>FACEBOOK:</strong> <a href="http://www.facebook.com/ocvet" target="_blank">www.facebook.com/ocvet</a></p>
+                <hr>
+                <p>Monday: 9:00 AM–5:00 PM<br>Tuesday–Friday: 8:00 AM–5:00 PM</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>ABOUT OCVET ZAMBOANGA</h3>
+                <ul>
+                    <li><a href="#mission">Mission</a></li>
+                    <li><a href="#vision">Vision</a></li>
+                    <li><a href="#objectives">Objectives</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>CONTACT INFORMATION</h3>
+                <p>Office of the City Veterinarian, San Roque, Philippines</p>
+                <p>Weekdays, 8:00am – 5:00pm</p>
+                <p><a href="mailto:ocvetzamboangacity@gmail.com">ocvetzamboangacity@gmail.com</a></p>
+                <p>(062) 985 0247</p>
+            </div>
+            <div class="footer-column">
+                <h3>SOCIAL MEDIA LINKS</h3>
+                <ul>
+                    <li><a href="http://www.facebook.com/ocvet" target="_blank">Facebook</a></li>
+                    <li><a href="#instagram" target="_blank">Instagram</a></li>
+                    <li><a href="#x" target="_blank">X</a></li>
+                    <li><a href="#youtube" target="_blank">YouTube</a></li>
+                </ul>
+            </div>
+            <div class="footer-logos">
+                <!-- Replace with actual logo paths -->
+                <img src="ocvetlogo.png" alt="City of Zamboanga Seal">
+                <img src="zambo.jpg" alt="Zamboanga Sibugay Seal">
+                <img src="cityhealth.png" alt="OCVET Logo">
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; Copyright 2025 OCVET Zamboanga</p>
+            <p>For any security issues, please contact <a href="mailto:support@OCVETZC.com">support@OCVETZC.com</a></p>
+        </div>
+    </footer>
+        
+
+    <!-- Ensure jQuery loads before your custom script -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="OCVETjs.js"></script>
+</body>
+
+</html>

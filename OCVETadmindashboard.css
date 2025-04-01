@@ -1,0 +1,167 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    height: 100vh;
+    background: linear-gradient(rgba(223, 215, 208, 0.95), rgba(223, 215, 208, 0.9)), url('OCVETimg7.jpg') no-repeat center center/cover;
+}
+.sidebar {
+    width: 250px;
+    background: #abc8d0;
+    color: #05234b;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    transition: width 0.3s;
+    overflow: hidden;
+}
+.sidebar.collapsed {
+    width: 80px;
+}
+.sidebar a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 5px;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    white-space: nowrap;
+}
+.sidebar.collapsed a span {
+    display: none;
+}
+.sidebar a:hover {
+    background: #0a8ba8;
+}
+.toggle-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    text-align: left;
+}
+.content {
+    flex: 1;
+    padding: 20px;
+}
+.icon {
+    width: 20px;
+    height: 20px;
+    fill: white;
+}
+.logout-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    display: none;
+    text-align: center;
+    z-index: 100;
+}
+.logout-popup h2 {
+    margin-bottom: 10px;
+}
+.logout-popup button {
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: transform 0.2s, background-color 0.3s;
+}
+.logout-popup .yes-btn {
+    background-color: #3B82F6;
+    color: white;
+}
+.logout-popup .no-btn {
+    background-color: #60A5FA;
+    color: white;
+}
+.logout-popup .yes-btn:hover {
+    background-color: #2563EB;
+    transform: scale(1.1);
+}
+.logout-popup .no-btn:hover {
+    background-color: #3B82F6;
+    transform: scale(1.1);
+}
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    z-index: 99;
+}
+
+.content { 
+    flex: 1; 
+    padding: 15px; 
+}
+
+.faq-management {
+    margin: 20px;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+}
+
+.faq-management h2 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.add-btn {
+    background: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.add-btn:hover {
+    background: #218838;
+}
+
+.faqs-list .faq-item {
+    margin: 10px 0;
+    padding: 10px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.faqs-list .faq-number {
+    font-weight: bold;
+    margin-right: 10px;
+}
