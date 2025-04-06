@@ -1,17 +1,17 @@
 :root {
-    --size-button: 35px; /* Define the variable used in your styles */
+    --size-button: 35px;
     --size-input: 3px;
 }
 
 * {
-    box-sizing: border-box; /* Ensure padding and borders are included in width */
+    box-sizing: border-box;
 }
 
 html, body {
     margin: 0;
     padding: 0;
     width: 100%;
-    overflow-x: hidden; /* Prevent horizontal scrolling */
+    overflow-x: hidden;
 }
 
 body {
@@ -83,7 +83,7 @@ header .search-container {
     border: none;
     color: #fff;
     outline: none;
-    width: var(--size-input);
+    width: 50px;
     transition: width 0.3s ease, box-shadow 0.3s ease;
     background-color: #2A4D7A;
     box-shadow: 1.5px 1.5px 3px #1B3554,
@@ -94,18 +94,18 @@ header .search-container {
     cursor: pointer;
 }
 
-/* Expands input on focus or when it has content */
 .search:focus,
-.search:not(:placeholder-shown) {
+.search:not(:placeholder-shown),
+.search.active {
     width: 200px;
     cursor: text;
     box-shadow: inset 1.5px 1.5px 3px #1B3554,
                 inset -1.5px -1.5px 3px rgba(42, 77, 122, 0.5);
 }
 
-/* Enables search icon interaction */
 .search:focus + .icon,
-.search:not(:placeholder-shown) + .icon {
+.search:not(:placeholder-shown) + .icon,
+.search.active + .icon {
     pointer-events: all;
     cursor: pointer;
 }
@@ -168,7 +168,7 @@ nav a {
     padding: 5px 10px;
     position: relative;
     z-index: 1;
-    transition: none; /* Ensure color change on hover is instantaneous */
+    transition: color 0.3s ease;
 }
 
 nav a::after {
@@ -181,7 +181,7 @@ nav a::after {
     left: 0;
     transform: translateY(-50%);
     z-index: -1;
-    /* Removed transition: height 0.3s ease, transform 0.3s ease; */
+    transition: height 0.3s ease, top 0.3s ease, transform 0.3s ease;
 }
 
 nav a:hover {
@@ -195,17 +195,7 @@ nav a:hover::after {
 }
 
 nav.scrolled a::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 0;
-    background-color: #5b8193;
-    top: 50%;
-    left: 0;
-    transform: translateY(-50%);
-    z-index: -1;
     border-radius: 10px;
-    /* Removed transition: height 0.3s ease, top 0.3s ease, transform 0.3s ease; */
 }
 
 nav.scrolled a:hover {
@@ -258,177 +248,78 @@ nav.scrolled .nav-logo-text {
     opacity: 1;
 }
 
-/*--------------------------------ABOUT US------------------------------------------------*/
-.about-us-page {
-    padding: 50px 20px;
-    background-color: #dfd7d0;
-    text-align: center;
-    position: relative; /* Already set, keeps this as the positioning context */
-    background: url('OCVETimg7.jpg') no-repeat center center/cover;
-    min-height: 100vh; /* Changed to min-height as per your last rule */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    z-index: 0;
+@media (max-width: 600px) {
+    .nav-links {
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+    }
+
+    nav a {
+        margin: 5px 0;
+    }
 }
 
-.aboutp {
-    background-color: #5b8193;
-    padding: 10px;
-    border-radius: 10px;
-    position: absolute; /* Position it absolutely within .about-us-page */
-    bottom: 20px; /* Distance from the bottom */
-    right: 30px; /* Distance from the right */
-    max-width: 600px; /* Optional: Limit width to avoid overflow */
-    text-align: left; /* Override center alignment for better readability */
-}
-
-.about-us-page h1 {
-    font-family: 'Agrandir Narrow', sans-serif;
-    font-size: 36px;
-    font-weight: 900;
-    text-transform: uppercase;
-    color: #05234b;
-    margin-bottom: 20px;
-}
-
-.about-us-page p {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 20px;
-    color: white;
+/*----------------------------------------------FAQ---------------------------------------*/
+.faq-section {
     max-width: 800px;
-    margin: 0 auto 15px;
-    line-height: 1.6;
-}
-
-/*--------------------------------------MISSION AND VISION---------------------------------------------*/
-.mission-vision {
-    background-color: #ebe0d7; /* Light background similar to the image */
-    padding: 50px 20px;
-    text-align: center;
-}
-
-.mission-vision-container {
-    display: flex;
-    justify-content: center;
-    gap: 30px; /* Space between Mission and Vision boxes */
-    flex-wrap: wrap; /* Allow wrapping on smaller screens */
-    max-width: 1200px; /* Limit width for larger screens */
     margin: 0 auto;
-}
-
-.mission, .vision {
-    background-color: #5b8193; /* Same color as .aboutp for consistency */
-    border-radius: 10px;
     padding: 20px;
-    flex: 1; /* Equal width for both boxes */
-    min-width: 300px; /* Minimum width to prevent squishing on small screens */
-    max-width: 500px; /* Maximum width for each box */
+    font-family: Arial, sans-serif;
+}
+
+.faq-section h2 {
     text-align: center;
-    color: white;
-}
-
-.mission h2, .vision h2 {
-    font-family: 'Agrandir Narrow', sans-serif; /* Match typography */
-    font-size: 24px;
-    font-weight: 900;
-    text-transform: uppercase;
-    color: white;
-    margin-bottom: 15px;
-}
-
-.mission p, .vision p {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 16px;
-    color: white;
-    line-height: 1.6;
-    margin: 0;
-}
-
-/*----------------------------------LOCATION------------------------------------------------------*/
-
-.location-contact {
-    background-color: #b3c7d6;
-    padding: 50px 20px;
-    text-align: center;
-}
-
-.location-contact-container {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    flex-wrap: wrap;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.location, .contact-info {
-    flex: 1;
-    min-width: 300px;
-    max-width: 500px;
-    text-align: left;
-}
-
-.location h2 {
-    font-family: 'Agrandir Narrow', sans-serif;
-    font-size: 24px;
-    font-weight: 900;
-    text-transform: uppercase;
-    color: #05234b;
+    color: #333;
     margin-bottom: 20px;
 }
 
-.map {
+.faq-item {
+    margin-bottom: 10px;
+}
+
+.faq-question {
     width: 100%;
-    height: 300px; /* Matches the height in the iframe */
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-.map iframe {
-    width: 100%;
-    height: 100%;
-    border: 0; /* Already set in iframe, but reinforced here */
-}
-
-.contact-info{
-    margin-top: 70px;
-    margin-left: 20px;
-}
-
-.contact-info p {
-    font-family: 'DM Sans', sans-serif;
+    text-align: left;
+    background-color: #f0f4f8;
+    border: none;
+    padding: 15px;
     font-size: 16px;
-    color: #05234b;
-    margin: 10px 0;
-    line-height: 1.6;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.contact-info a {
-    color: #05234b;
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-.contact-info a:hover {
+.faq-question::after {
+    content: '+';
+    font-size: 20px;
+    font-weight: bold;
     color: #5b8193;
 }
 
-.contact-info hr {
-    border: 0;
-    border-top: 1px solid #05234b;
-    margin: 15px 0;
+.faq-question.active::after {
+    content: '−';
+    color: #5b8193;
 }
 
-.contact-info strong {
-    font-weight: 700;
+.faq-answer {
+    display: none;
+    padding: 15px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-top: none;
+}
+
+.faq-answer p {
+    margin: 0;
+    font-size: 14px;
+    color: #555;
 }
 
 /*----------------------------------------------FOOTER------------------------------------*/
-
 .footer {
-    background-color: #eae7e4; /* Dark blue background as in the image */
+    background-color: #eae7e4;
     color: #394b64;
     padding: 40px 20px;
     font-family: 'DM Sans', sans-serif;
@@ -491,7 +382,7 @@ nav.scrolled .nav-logo-text {
 }
 
 .footer-column a:hover {
-    color: #394b64;
+    color: #5b8193;
 }
 
 .footer-logos {
@@ -527,6 +418,6 @@ nav.scrolled .nav-logo-text {
 }
 
 .footer-bottom a:hover {
-    color: #394b64;
+    color: #5b8193;
 }
 

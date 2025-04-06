@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Your existing head content -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Office of the City Veterinarian - Zamboanga City</title>
@@ -18,13 +17,13 @@
             <img id="ocvetlogo" src="ocvetlogo.png" alt="OCVET Logo">
             <div class="text-container">
                 <h1><strong>OFICINA DE VETERENARIO CIUDAD DE ZAMBOANGA</strong></h1>
-                <p><i>Office of the City Veterinarian, Zamboanga City</i></p>
+                <p><em>Office of the City Veterinarian, Zamboanga City</em></p>
             </div>
         </div>
 
-        <div class="search-container" style="position: absolute; right: 20px; top: 35px;">
+        <div class="search-container">
             <div class="container">
-                <input type="text" name="text" class="search" required="" placeholder="Type to search...">
+                <input type="text" name="text" class="search" placeholder="Type to search..." aria-label="Search">
                 <div class="icon">
                     <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
                         <title>Search</title>
@@ -42,12 +41,12 @@
             <span class="nav-logo-text">OCVET</span>
         </div>
         <div class="nav-links">
-            <a href="#home">HOME</a>
-            <a href="OCVET-aboutUs.html" onclick="goToAboutUs()">ABOUT US</a>
-            <a href="#faq">FAQs</a>
+            <a href="OCVET-Homepage.html" aria-current="page">HOME</a>
+            <a href="OCVET-aboutUs.html">ABOUT US</a>
+            <a href="OCVET-faqs.php">FAQs</a>
             <a href="#programs">SPECIAL PROGRAMS</a>
             <a href="#news">NEWS</a>
-            <a href="#appointment" onclick="openModal()">LOGIN / SIGN UP</a>
+            <a href="#" class="login-signup-btn" onclick="openModal(event)">LOGIN / SIGN UP</a>
         </div>
         <div class="nav-search">
             <!-- This will be populated with the search-container when scrolled -->
@@ -58,9 +57,9 @@
         <div class="overlay"></div>
         <div class="hero-content">
             <div id="paragraph">
-                <p><i>“WE CARE FOR YOUR PETS<br>AS WE WOULD OUR OWN”</i></p>
+                <h1><em>“WE CARE FOR YOUR PETS<br>AS WE WOULD OUR OWN”</em></h1>
             </div>
-            <button type="button" class="apt-btn"  onclick="openModal()">BOOK AN APPOINTMENT</button>
+            <button type="button" class="login-signup-btn" id="apt-btn" aria-label="Book an appointment with OCVET">BOOK AN APPOINTMENT</button>
             <p class="contact-number"><strong>Or give us a call at</strong> (062) 985 0247</p>
         </div>
     </section>
@@ -83,7 +82,7 @@
 
     <section class="special-programs">
         <div class="special-programs-container">
-            <h2>SPECIAL PROGRAMS</h2> <!-- Fixed typo -->
+            <h2>SPECIAL PROGRAMS</h2>
             <div class="special-image">
                 <img src="OCVETimg5.png" alt="Special Programs Image">
             </div>
@@ -91,7 +90,6 @@
         </div>
     </section>
 
-    <!-- New Services Section -->
     <section class="services">
         <div class="services-container">
             <div class="services-header">
@@ -123,7 +121,6 @@
         </div>
     </section>
 
-    <!-- New News Section -->
     <section class="news">
         <div class="news-container">
             <h2>NEWS</h2>
@@ -154,97 +151,14 @@
         </div>
     </section>
 
-    <!-- New FAQs Section -->
     <section class="faqs">
         <div class="faqs-container">
             <h2>FAQs</h2>
-            <div class="faqs-grid">
-                <div class="faq-item">
-                    <span class="faq-number">1.</span>
-                    <p>My pet vomited today. What should I do?</p>
-                </div>
-                <div class="faq-item">
-                    <span class="faq-number">2.</span>
-                    <p>My pet has loose stools today. What should I do?</p>
-                </div>
-                <div class="faq-item">
-                    <span class="faq-number">3.</span>
-                    <p>How can I stop my dog from eating its stool?</p>
-                </div>
+            <div class="faqs-grid" id="faqs-grid">
             </div>
-            <button class="more-btn">MORE</button>
+            <button class="more-btn" onclick="goToFaqs()">MORE</button>
         </div>
     </section>
-
-     <!-- LOGIN / SIGN UP -->
-    <div id="loginModal" class="modal">
-        <div class="modal-container">
-            <ul class="tab-group">
-                <li class="tab active"><a href="#signup" onclick="switchTab('signup')">Sign Up</a></li>
-                <li class="tab"><a href="#login" onclick="switchTab('login')">Log In</a></li>
-            </ul>
-            <div class="tab-content">
-                <div id="signup" class="active">
-                    <h1>Ready to Create an Account?</h1>
-                    <form onsubmit="return handleFormSubmit(event)" action="OCVET-UserDashboard.html" method="GET">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <input type="text" class="input" required aria-label="Last Name">
-                                <label class="user-label">Last Name</label>
-                            </div>
-                            <div class="input-group">
-                                <input type="text" class="input" required aria-label="First Name">
-                                <label class="user-label">First Name</label>
-                            </div>
-                            <div class="input-group">
-                                <input type="email" class="input" required aria-label="Email Address">
-                                <label class="user-label">Email Address</label>
-                            </div>
-                            <div class="input-group">
-                                <input type="password" id="password" class="input" required aria-label="Create Your Password">
-                                <label class="user-label">Create Your Password</label>
-                                <span id="passwordMessage" class="message"></span>
-                            </div>
-                            <div class="input-group">
-                                <input type="password" id="confirmPassword" class="input" required aria-label="Confirm Your Password">
-                                <label class="user-label">Confirm Your Password</label>
-                                <span id="passwordMatchMessage" class="message error">Passwords do not match.</span>
-                            </div>
-                        </div>
-                        <div class="custom-checkbox-container">
-                            <input class="custom-checkbox-input" id="modernCheckbox" type="checkbox" required />
-                            <label class="custom-checkbox-label" for="modernCheckbox">
-                                <span class="custom-checkbox-text">By continuing you are confirming that you have read, understood, and agreed to our <a href="#">Terms and Conditions</a></span>
-                            </label>
-                        </div>
-                        <div class="form-group">
-                            <button type="submit">Get Started</button>
-                        </div>
-                    </form>
-                </div>
-                <div id="login">
-                    <h1>Welcome Back!</h1>
-                    <form action="OCVET-UserDashboard.html" method="GET">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <input type="email" class="input" required aria-label="Email Address">
-                                <label class="user-label">Email Address</label>
-                            </div>
-                            <div class="input-group">
-                                <input type="password" name="password" class="input" required aria-label="Password">
-                                <label class="user-label">Password</label>
-                            </div>
-                        </div>
-                        <p class="forgot"><a href="#">Forgot Password?</a></p>
-                        <div class="form-group">
-                            <button type="submit">Log In</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <button class="modal-close" onclick="closeModal(event)" aria-label="Close Modal">×</button>
-        </div>
-    </div>
 
     <footer class="footer">
         <div class="footer-container">
@@ -273,18 +187,61 @@
                 </ul>
             </div>
             <div class="footer-logos">
-                <!-- Replace with actual logo paths -->
                 <img src="ocvetlogo.png" alt="City of Zamboanga Seal">
                 <img src="zambo.jpg" alt="Zamboanga Sibugay Seal">
                 <img src="cityhealth.png" alt="OCVET Logo">
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; Copyright 2025 OCVET Zamboanga</p>
+            <p>© Copyright 2025 OCVET Zamboanga</p>
             <p>For any security issues, please contact <a href="mailto:support@OCVETZC.com">support@OCVETZC.com</a></p>
         </div>
     </footer>
 
+    <div id="modal-content"></div>
+
     <script src="OCVETjs.js"></script>
+    <script src="modal.js"></script>  
+    <script>
+        $(document).ready(function() {
+            $.ajax({
+                url: 'fetch_faqs.php',
+                method: 'GET',
+                dataType: 'json',
+                success: function(faqs) {
+                    const faqsGrid = $('#faqs-grid');
+                    faqsGrid.empty(); // Clear existing content
+
+                    if (faqs.length === 0) {
+                        faqsGrid.html('<div class="faq-item"><span class="faq-number">1.</span><p>No FAQs available yet.</p></div>');
+                    } else {
+                        const limit = Math.min(faqs.length, 3); // Limit to 3
+                        for (let i = 0; i < limit; i++) {
+                            const faq = faqs[i];
+                            const faqItem = `
+                                <div class="faq-item">
+                                    <span class="faq-number">${i + 1}.</span>
+                                    <p>${faq.question}</p>
+                                </div>
+                            `;
+                            faqsGrid.append(faqItem);
+                        }
+                    }
+                },
+                error: function() {
+                    $('#faqs-grid').html('<div class="faq-item"><span class="faq-number">1.</span><p>Error loading FAQs.</p></div>');
+                }
+            });
+        });
+
+
+        function goToAboutUs() {
+            window.location.href = 'OCVET-aboutUs.html';
+        }
+        
+        function goToFaqs() {   
+            window.location.href = 'OCVET-faqs.php';
+        }
+    </script>
 </body>
 </html>

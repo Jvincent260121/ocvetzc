@@ -6,4 +6,7 @@ $faqs = json_decode(file_get_contents("faqs.json"), true) ?: [];
 
 // Output the FAQs as JSON
 echo json_encode($faqs);
+
+
+
 ?>

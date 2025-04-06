@@ -1,125 +1,164 @@
-body {
-    font-family: Arial, sans-serif;
+/* Reset and Base Styles */
+* {
     margin: 0;
     padding: 0;
-    display: flex;
-    height: 100vh;
-    background: linear-gradient(rgba(223, 215, 208, 0.95), rgba(223, 215, 208, 0.9)), url('OCVETimg7.jpg') no-repeat center center/cover;
+    box-sizing: border-box;
 }
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar Styles */
 .sidebar {
     width: 250px;
-    background: #abc8d0;
-    color: #05234b;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    transition: width 0.3s;
-    overflow: hidden;
-}
-.sidebar.collapsed {
-    width: 80px;
-}
-.sidebar a {
+    background-color: #2A4D7A;
     color: white;
-    text-decoration: none;
-    font-weight: bold;
-    padding: 10px;
-    border-radius: 5px;
-    transition: 0.3s;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    white-space: nowrap;
+    padding: 20px;
+    position: fixed;
+    height: 100%;
+    transition: width 0.3s ease;
+    overflow-x: hidden;
 }
-.sidebar.collapsed a span {
+
+.sidebar.collapsed {
+    width: 50px;
+}
+
+.sidebar.collapsed span {
     display: none;
 }
-.sidebar a:hover {
-    background: #0a8ba8;
+
+.sidebar.collapsed .toggle-btn svg {
+    transform: rotate(180deg);
 }
+
 .toggle-btn {
     background: none;
     border: none;
     color: white;
-    font-size: 20px;
+    font-size: 24px;
     cursor: pointer;
-    text-align: left;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
 }
-.content {
-    flex: 1;
-    padding: 20px;
+
+.toggle-btn .icon {
+    width: 24px;
+    height: 24px;
 }
-.icon {
-    width: 20px;
-    height: 20px;
-    fill: white;
-}
-.logout-popup {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-    display: none;
-    text-align: center;
-    z-index: 100;
-}
-.logout-popup h2 {
+
+.sidebar a {
+    display: flex;
+    align-items: center;
+    color: white;
+    text-decoration: none;
+    padding: 10px;
     margin-bottom: 10px;
-}
-.logout-popup button {
-    padding: 10px 20px;
-    margin: 5px;
-    border: none;
-    cursor: pointer;
     border-radius: 5px;
-    transition: transform 0.2s, background-color 0.3s;
-}
-.logout-popup .yes-btn {
-    background-color: #3B82F6;
-    color: white;
-}
-.logout-popup .no-btn {
-    background-color: #60A5FA;
-    color: white;
-}
-.logout-popup .yes-btn:hover {
-    background-color: #2563EB;
-    transform: scale(1.1);
-}
-.logout-popup .no-btn:hover {
-    background-color: #3B82F6;
-    transform: scale(1.1);
-}
-.overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: none;
-    z-index: 99;
+    transition: background-color 0.3s ease;
 }
 
-.content { 
-    flex: 1; 
-    padding: 15px; 
+.sidebar a:hover {
+    background-color: #3b6a9b;
 }
 
-.faq-management {
-    margin: 20px;
+.sidebar a.active {
+    background-color: #5b8193; /* Highlight the active link */
+}
+
+.sidebar .icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+}
+
+.sidebar span {
+    font-size: 16px;
+}
+
+/* Content Styles */
+.content {
+    margin-left: 250px;
     padding: 20px;
-    background: #f9f9f9;
-    border-radius: 8px;
+    flex-grow: 1;
+    transition: margin-left 0.3s ease;
+}
+
+.sidebar.collapsed ~ .content {
+    margin-left: 80px;
+}
+
+.content h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.content p {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+/* Dashboard Overview (Home Section) */
+.dashboard-overview {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    min-width: 250px;
+    text-align: center;
+}
+
+.card h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #2A4D7A;
+}
+
+.card p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.card .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #5b8193;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.card .btn:hover {
+    background-color: #4a6a7a;
+}
+
+/* FAQ Management Section */
+.faq-management {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .faq-management h2 {
-    margin-bottom: 10px;
+    font-size: 20px;
+    margin-bottom: 15px;
     color: #333;
 }
 
@@ -129,39 +168,125 @@ body {
 
 .input-group label {
     display: block;
+    font-size: 16px;
     margin-bottom: 5px;
-    font-weight: bold;
+    color: #333;
 }
 
 .input-group input {
     width: 100%;
-    padding: 8px;
+    padding: 10px;
+    font-size: 16px;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 5px;
 }
 
 .add-btn {
-    background: #28a745;
+    background-color: #5b8193;
     color: white;
-    padding: 10px 20px;
     border: none;
-    border-radius: 4px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .add-btn:hover {
-    background: #218838;
+    background-color: #4a6a7a;
 }
 
-.faqs-list .faq-item {
-    margin: 10px 0;
+.faqs-list {
+    margin-top: 20px;
+}
+
+.faq-item {
+    display: flex;
+    align-items: center;
     padding: 10px;
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    border-bottom: 1px solid #eee;
 }
 
-.faqs-list .faq-number {
+.faq-number {
     font-weight: bold;
     margin-right: 10px;
+    color: #2A4D7A;
+}
+
+.faq-item p {
+    margin: 0;
+    font-size: 16px;
+    color: #333;
+}
+
+/* Logout Popup Styles */
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.logout-popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1001;
+    text-align: center;
+}
+
+.logout-popup h2 {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.logout-popup button {
+    padding: 10px 20px;
+    margin: 0 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.yes-btn {
+    background-color: #5b8193;
+    color: white;
+}
+
+.yes-btn:hover {
+    background-color: #4a6a7a;
+}
+
+.no-btn {
+    background-color: #ccc;
+    color: #333;
+}
+
+.no-btn:hover {
+    background-color: #bbb;
+}
+
+.input-group textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: vertical;
+}
+
+.faq-item div {
+    flex: 1;
 }

@@ -1,10 +1,15 @@
+<?php
+// Load FAQs from faqs.json
+$faqs = json_decode(file_get_contents("faqs.json"), true) ?: [];
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Office of the City Veterinarian - Zamboanga City</title>
-    <link rel="stylesheet" href="OCVET-aboutUs.css">
+    <link rel="stylesheet" href="OCVET-faqs.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://db.onlinewebfonts.com/c/b13def851d7a78ce98af9c8bc60e166d?family=Agrandir+Narrow" rel="stylesheet">
@@ -24,7 +29,7 @@
         <div class="search-container">
             <div class="container">
                 <input type="text" name="text" class="search" placeholder="Type to search..." aria-label="Search">
-                <div class="icon">
+                <div class="icon" role="button" aria-label="Toggle search input">
                     <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
                         <title>Search</title>
                         <path d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"></path>
@@ -41,9 +46,9 @@
             <span class="nav-logo-text">OCVET</span>
         </div>
         <div class="nav-links">
-            <a href="OCVET-Homepage.html" aria-current="page">HOME</a>
+            <a href="OCVET-Homepage.html">HOME</a>
             <a href="OCVET-aboutUs.html">ABOUT US</a>
-            <a href="OCVET-faqs.php">FAQs</a>
+            <a href="OCVET-faqs.php" aria-current="page">FAQs</a>
             <a href="#programs">SPECIAL PROGRAMS</a>
             <a href="#news">NEWS</a>
             <a href="#" class="login-signup-btn" onclick="openModal(event)">LOGIN / SIGN UP</a>
@@ -53,51 +58,28 @@
         </div>
     </nav>
 
-    <section class="about-us-page">
-        <div class="aboutp">
-            <p>The Office of the City Veterinarian (OCVet) in Zamboanga City is committed to promoting 
-                animal health and public safety. Under the leadership of Dr. Mario D. Arriola, our team strives 
-                to deliver top-notch veterinary services to the community.</p>
-        </div>
-    </section>
+    <main>
+        <section class="faq-section" aria-labelledby="faq-heading">
+            <h2 id="faq-heading">How Can We Help You?</h2>
+            <?php
+            if (empty($faqs)) {
+                echo "<p>No FAQs available at the moment.</p>";
+            } else {
+                foreach ($faqs as $index => $faq) {
+                    $faqId = "faq" . ($index + 1);
+                    echo '<div class="faq-item">';
+                    echo '<button class="faq-question" aria-expanded="false" aria-controls="' . $faqId . '" aria-label="Expand FAQ about ' . htmlspecialchars($faq["question"]) . '">' . htmlspecialchars($faq["question"]) . '</button>';
+                    echo '<div class="faq-answer" id="' . $faqId . '">';
+                    echo '<p>' . htmlspecialchars($faq["answer"]) . '</p>';
+                    echo '</div>';
+                    echo '</div>';
+                }
+            }
+            ?>
+        </section>
+    </main>
 
-    <section class="mission-vision">
-        <div class="mission-vision-container">
-            <div class="mission">
-                <h2>MISSION</h2>
-                <p>To ensure the well-being of animals and safeguard public health through dedicated veterinary services and community education.</p>
-            </div>
-            <div class="vision">
-                <h2>VISION</h2>
-                <p>Community where all animals are healthy, cared for, and valued, contributing to the overall safety and harmony of Zamboanga City.</p>
-            </div>
-        </div>
-    </section>
-
-    <section class="location-contact">
-        <div class="location-contact-container">
-            <div class="location">
-                <h2>LOCATION & CONTACT INFORMATION</h2>
-                <div class="map">
-                    <!-- Interactive Google Map -->
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.629944795963!2d122.0492635740514!3d6.934755493065183!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x325041bad26d2a65%3A0xf1e7e669e64637e0!2sOffice%20of%20the%20City%20Veterinarian!5e0!3m2!1sen!2sph!4v1743337723460!5m2!1sen!2sph" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-                </div>
-            </div>
-            <div class="contact-info">
-                <p>W3M2+WP4, San Roque Rd, Zamboanga, Zamboanga Sibugay</p>
-                <hr>
-                <p><strong>CALL:</strong> (062) 985 0247</p>
-                <p><strong>EMAIL:</strong> <a href="mailto:ocvetzamboangacity@gmail.com">ocvetzamboangacity@gmail.com</a></p>
-                <p><strong>FACEBOOK:</strong> <a href="http://www.facebook.com/ocvet" target="_blank">www.facebook.com/ocvet</a></p>
-                <hr>
-                <p>Monday: 9:00 AM–5:00 PM<br>Tuesday–Friday: 8:00 AM–5:00 PM</p>
-            </div>
-        </div>
-    </section>
-
-    <div id="modal-content" style="display: none;"></div>
-
-    <footer class="footer">
+    <footer class="footer" aria-label="Footer">
         <div class="footer-container">
             <div class="footer-column">
                 <h3>ABOUT OCVET ZAMBOANGA</h3>
@@ -112,21 +94,21 @@
                 <p>Office of the City Veterinarian, San Roque, Philippines</p>
                 <p>Weekdays, 8:00am – 5:00pm</p>
                 <p><a href="mailto:ocvetzamboangacity@gmail.com">ocvetzamboangacity@gmail.com</a></p>
-                <p>(062) 985 0247</p>
+                <p><a href="tel:+63629850247">(062) 985-0247</a></p>
             </div>
             <div class="footer-column">
                 <h3>SOCIAL MEDIA LINKS</h3>
                 <ul>
-                    <li><a href="http://www.facebook.com/ocvet" target="_blank">Facebook</a></li>
-                    <li><a href="#instagram" target="_blank">Instagram</a></li>
-                    <li><a href="#x" target="_blank">X</a></li>
-                    <li><a href="#youtube" target="_blank">YouTube</a></li>
+                    <li><a href="http://www.facebook.com/ocvet" target="_blank" rel="noopener noreferrer">Facebook</a></li>
+                    <li><a href="#instagram" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+                    <li><a href="#x" target="_blank" rel="noopener noreferrer">X</a></li>
+                    <li><a href="#youtube" target="_blank" rel="noopener noreferrer">YouTube</a></li>
                 </ul>
             </div>
             <div class="footer-logos">
-                <img src="ocvetlogo.png" alt="City of Zamboanga Seal">
-                <img src="zambo.jpg" alt="Zamboanga Sibugay Seal">
-                <img src="cityhealth.png" alt="OCVET Logo">
+                <img src="ocvetlogo.png" alt="OCVET Logo">
+                <img src="zambo.jpg" alt="Zamboanga City Official Seal">
+                <img src="cityhealth.png" alt="Zamboanga City Health Office Logo">
             </div>
         </div>
         <div class="footer-bottom">
@@ -135,18 +117,39 @@
         </div>
     </footer>
 
+    <div id="loginModal" style="display: none;">
+        <div class="modal-content">
+            <span class="modal-close">×</span>
+            <div class="tab-group">
+                <div class="tab active"><a href="#login" onclick="switchTab('login')">Login</a></div>
+                <div class="tab"><a href="#signup" onclick="switchTab('signup')">Sign Up</a></div>
+            </div>
+            <div class="tab-content">
+                <div id="login" class="active">
+                    <form id="loginForm">
+                        <label for="loginEmail">Email:</label>
+                        <input type="email" id="loginEmail" name="email" required>
+                        <label for="loginPassword">Password:</label>
+                        <input type="password" id="loginPassword" name="password" required>
+                        <button type="submit">Login</button>
+                    </form>
+                </div>
+                <div id="signup">
+                    <form id="signupForm">
+                        <label for="signupEmail">Email:</label>
+                        <input type="email" id="signupEmail" name="email" required>
+                        <label for="signupPassword">Password:</label>
+                        <input type="password" id="signupPassword" name="password" required>
+                        <button type="submit">Sign Up</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-content"></div>
+
     <script src="OCVETjs.js"></script>
-    <script src="modal.js"></script>  
-    <script>
-    
-        function goToAboutUs() {
-            window.location.href = 'OCVET-aboutUs.html';
-        }
-        
-        function goToFaqs() {   
-            window.location.href = 'OCVET-faqs.php';
-        }
-        
-    </script>
+    <script src="modal.js"></script>
 </body>
 </html>
