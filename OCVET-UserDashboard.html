@@ -3,177 +3,342 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vet Clinic Dashboard</title>
+    <title>OCVET Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        :root {
+            --primary-color: #05234b;
+            --secondary-color: #abc8d0;
+            --tertiary-color: #ebe0d7;
+            --accent-color: #0a8ba8;
+            --background-color: #ece8e5;
+            --white: #ffffff;
+            --text-color: #333333;
+        }
+
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
             display: flex;
-            height: 100vh;
-            background: #f4f4f4;
+            min-height: 100vh;
+            background: var(--background-color);
         }
-        .sidebar {
-            width: 250px;
-            background: #12B1D1;
-            color: white;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            transition: width 0.3s;
-            overflow: hidden;
-        }
-        .sidebar.collapsed {
-            width: 80px;
-        }
-        .sidebar a {
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-            padding: 10px;
-            border-radius: 5px;
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            white-space: nowrap;
-        }
-        .sidebar.collapsed a span {
-            display: none;
-        }
-        .sidebar a:hover {
-            background: #0a8ba8;
-        }
-        .toggle-btn {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 20px;
-            cursor: pointer;
-            text-align: left;
-        }
+
         .content {
             flex: 1;
-            padding: 20px;
+            padding: 2rem;
+            margin-left: 80px;
+            margin-top: 80px;
+            transition: margin-left 0.3s ease;
         }
-        .icon {
-            width: 20px;
-            height: 20px;
-            fill: white;
+
+        .sidebar.expanded ~ .content {
+            margin-left: 250px;
         }
+
+        .content h1 {
+            color: var(--primary-color);
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .content p {
+            color: var(--text-color);
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .dashboard-boxes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+
+        .box {
+            background: var(--tertiary-color);
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .box:hover {
+            background: var(--secondary-color);
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .box svg {
+            width: 30px;
+            height: 30px;
+            fill: var(--primary-color);
+            transition: fill 0.3s ease;
+        }
+
+        .box:hover svg {
+            fill: var(--accent-color);
+        }
+
+        .box h3 {
+            margin: 0;
+            font-size: 1rem;
+            color: var(--primary-color);
+        }
+
         .logout-popup {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
             display: none;
             text-align: center;
-            z-index: 100;
+            z-index: 1001;
+            width: 90%;
+            max-width: 300px;
         }
+
         .logout-popup h2 {
-            margin-bottom: 10px;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            font-size: 1.25rem;
         }
+
         .logout-popup button {
-            padding: 10px 20px;
-            margin: 5px;
+            padding: 0.75rem 1.5rem;
+            margin: 0.5rem;
             border: none;
             cursor: pointer;
-            border-radius: 5px;
-            transition: transform 0.2s, background-color 0.3s;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
         }
+
         .logout-popup .yes-btn {
-            background-color: #3B82F6;
-            color: white;
+            background: var(--accent-color);
+            color: var(--white);
         }
+
         .logout-popup .no-btn {
-            background-color: #60A5FA;
-            color: white;
+            background: var(--text-color);
+            color: var(--white);
         }
+
         .logout-popup .yes-btn:hover {
-            background-color: #2563EB;
-            transform: scale(1.1);
+            background: var(--primary-color);
+            transform: translateY(-2px);
         }
+
         .logout-popup .no-btn:hover {
-            background-color: #3B82F6;
-            transform: scale(1.1);
+            background: var(--primary-color);
+            transform: translateY(-2px);
         }
+
         .overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.6);
             display: none;
-            z-index: 99;
+            z-index: 1000;
         }
-		
-        .content { 
-			flex: 1; 
-			padding: 15px; 
-		}
+
+        @media (max-width: 768px) {
+            .content {
+                margin-left: 80px;
+            }
+
+            .sidebar.expanded ~ .content {
+                margin-left: 200px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .content {
+                padding: 1rem;
+            }
+
+            .dashboard-boxes {
+                grid-template-columns: 1fr;
+            }
+
+            .logout-popup {
+                padding: 1rem;
+            }
+
+            .logout-popup h2 {
+                font-size: 1rem;
+            }
+
+            .logout-popup button {
+                padding: 0.5rem 1rem;
+                font-size: 0.875rem;
+            }
+        }
+       
     </style>
 </head>
 <body>
-    <div class="sidebar" id="sidebar">
-        <button class="toggle-btn" onclick="toggleSidebar()">
-            <svg class="icon" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18m-18 6h18" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
-        </button>
-        <a href="#dashboard">
-            <svg class="icon" viewBox="0 0 24 24"><path d="M3 13h2v8h6v-6h2v6h6v-8h2L12 3z" fill="white"/></svg>
-            <span>Dashboard</span>
-        </a>
-        <a href="#appointments">
-            <svg class="icon" viewBox="0 0 24 24"><path d="M7 11h10M7 15h7M3 8h18M3 4h18v16H3z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span>Appointments</span>
-        </a>
-        <a href="#pet-records">
-            <svg class="icon" viewBox="0 0 24 24"><path d="M12 3l4 7H8l4-7zM4 21c0-4 4-5 8-5s8 1 8 5H4z" fill="white"/></svg>
-            <span>Pet Records</span>
-        </a>
-        <a href="#messages">
-            <svg class="icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span>Messages</span>
-        </a>
-        <a href="#profile">
-            <svg class="icon" viewBox="0 0 24 24"><path d="M12 14a7 7 0 0 0-7 7h14a7 7 0 0 0-7-7zm0-2a5 5 0 1 0 0-10 5 5 0 0 0 0 10z" fill="white"/></svg>
-            <span>Profile</span>
-        </a>
-        <a href="#logout" onclick="showLogoutPopup()">
-            <svg class="icon" viewBox="0 0 24 24"><path d="M16 17l5-5-5-5m-9 5h14m-14 9h14m-14-18h14" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span>Log-out</span>
-        </a>
-    </div>
+    <!-- Include Sidebar -->
+    <div id="sidebar-container"></div>
+
+    <!-- Include Header -->
+    <div id="header-container"></div>
+
+    <!-- Content -->
     <div class="content">
-        <h1>Welcome to the Dashboard</h1>
-        <p>Manage your appointments, pet records, and messages here.</p>
+        <div class="dashboard-section active">
+            <h1>Welcome to the OCVET Dashboard</h1>
+            <p>Manage your appointments, pet records, and more.</p>
+            <div class="dashboard-boxes">
+                <div class="box" onclick="navigateTo('appointments')" role="button" tabindex="0" aria-label="Appointments">
+                    <svg viewBox="0 0 24 24"><path d="M7 11h10M7 15h7M3 8h18M3 4h18v16H3z" fill="currentColor"/></svg>
+                    <h3>Appointments</h3>
+                </div>
+                <div class="box" onclick="navigateTo('pet-records')" role="button" tabindex="0" aria-label="Pet Records">
+                    <svg viewBox="0 0 24 24"><path d="M12 3l4 7H8l4-7zM4 21c0-4 4-5 8-5s8 1 8 5H4z" fill="currentColor"/></svg>
+                    <h3>Pet Records</h3>
+                </div>
+                <div class="box" onclick="navigateTo('messages')" role="button" tabindex="0" aria-label="Messages">
+                    <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" fill="currentColor"/></svg>
+                    <h3>Messages</h3>
+                </div>
+                <div class="box" onclick="navigateTo('profile')" role="button" tabindex="0" aria-label="Profile">
+                    <svg viewBox="0 0 24 24"><path d="M12 14a7 7 0 0 0-7 7h14a7 7 0 0 0-7-7zm0-2a5 5 0 1 0 0-10 5 5 0 0 0 0 10z" fill="currentColor"/></svg>
+                    <h3>Profile</h3>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <!-- Logout Popup -->
     <div class="overlay" onclick="closeLogoutPopup()"></div>
     <div class="logout-popup">
         <h2>Are you sure you want to log out?</h2>
         <button class="yes-btn" onclick="confirmLogout()">Yes</button>
         <button class="no-btn" onclick="closeLogoutPopup()">No</button>
     </div>
+
     <script>
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('collapsed');
-        }
+        // Load header and sidebar
+        $(document).ready(function() {
+            $("#header-container").load("Userheader.html");
+            $("#sidebar-container").load("Usersidebar.html");
+        });
+
         function showLogoutPopup() {
             document.querySelector('.logout-popup').style.display = 'block';
             document.querySelector('.overlay').style.display = 'block';
         }
+
         function closeLogoutPopup() {
             document.querySelector('.logout-popup').style.display = 'none';
             document.querySelector('.overlay').style.display = 'none';
         }
+
         function confirmLogout() {
-            window.location.href = 'OCVET-Homepage.html';
+            $.ajax({
+                url: 'api/logout.php',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    user_id: sessionStorage.getItem('user_id')
+                }),
+                success: function() {
+                    console.log('Logout successful');
+                },
+                error: function(xhr, status, error) {
+                    console.error('Logout AJAX error:', { status, error, xhr });
+                },
+                complete: function() {
+                    sessionStorage.clear();
+                    window.location.href = 'OCVET-Homepage.html';
+                }
+            });
         }
+
+        function navigateTo(section) {
+            if (section === 'profile') {
+                window.location.href = 'OCVET-Profile.html';
+            } else if (section === 'dashboard') {
+                document.querySelector('.dashboard-section').classList.add('active');
+            } else if (section === 'appointments') {
+                window.location.href = 'OCVET-Appointment.html';
+            } else if (section === 'pet-records') {
+                window.location.href = 'OCVET-PetRecords.html';
+            } else if (section === 'messages') {
+                window.location.href = 'OCVET-Messages.html';
+            }
+        }
+
+        document.querySelectorAll('.box').forEach(box => {
+            box.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === 'Space') {
+                    e.preventDefault();
+                    box.click();
+                }
+            });
+        });
+
+        window.onload = function() {
+            const userId = sessionStorage.getItem('user_id');
+            const cachedUsername = sessionStorage.getItem('username');
+            const headerTitle = document.getElementById('header-title');
+
+            if (cachedUsername) {
+                headerTitle.textContent = `${cachedUsername}'s Dashboard`;
+                return;
+            }
+
+            if (userId) {
+                $.ajax({
+                    url: 'api/get_username.php',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        action: 'get_user',
+                        user_id: userId
+                    }),
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.success && response.username) {
+                            headerTitle.textContent = `${response.username}'s Dashboard`;
+                            sessionStorage.setItem('username', response.username);
+                        } else {
+                            headerTitle.textContent = 'User Dashboard';
+                            console.warn('Failed to fetch username:', response.error || 'No username returned');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        headerTitle.textContent = 'User Dashboard';
+                        console.error('Username fetch AJAX error:', { status, error, xhr });
+                        console.log('Raw response:', xhr.responseText);
+                    }
+                });
+            } else {
+                headerTitle.textContent = 'Guest Dashboard';
+                console.log('No user_id found, redirecting to homepage');
+                window.location.href = 'OCVET-Homepage.html';
+            }
+        };
     </script>
 </body>
 </html>

@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCVET Profile</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="modal.js"></script>
+    <style>
+        :root {
+            --primary-color: #05234b;
+            --secondary-color: #abc8d0;
+            --tertiary-color: #ebe0d7;
+            --accent-color: #0a8ba8;
+            --background-color: #ece8e5;
+            --white: #ffffff;
+            --text-color: #333333;
+            --error-color: #d32f2f;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            display: flex;
+            min-height: 100vh;
+            background: var(--background-color);
+        }
+
+        /* Content */
+        .content {
+            margin-left: 80px;
+            margin-top: 80px;
+            padding: 2rem;
+            width: calc(100% - 80px);
+            display: flex;
+            justify-content: left;
+            align-items: flex-start;
+            min-height: calc(100vh - 80px);
+            transition: margin-left 0.3s ease, width 0.3s ease;
+        }
+
+        .sidebar.expanded ~ .content {
+            margin-left: 250px;
+            width: calc(100% - 250px);
+        }
+
+        /* Profile Section */
+        .profile-section {
+            background: var(--tertiary-color);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 2000px;
+            text-align: left;
+        }
+
+        .profile-section h2 {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .profile-section .profile-details {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .profile-section .profile-details div {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .profile-section .profile-details label {
+            font-weight: 600;
+            color: var(--primary-color);
+            width: 150px;
+        }
+
+        .profile-section .profile-details span {
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+
+        .profile-section .error-message {
+            color: var(--error-color);
+            font-size: 1rem;
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .profile-section .error-message a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .profile-section .error-message a:hover {
+            text-decoration: underline;
+        }
+
+        .edit-profile-btn {
+            display: block;
+            margin: 1rem 0;
+            padding: 0.75rem 1.5rem;
+            background: var(--accent-color);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            max-width: 200px;
+            pointer-events: auto;
+        }
+
+        .edit-profile-btn:hover {
+            background: var(--primary-color);
+        }
+
+        /* Profile Form Modal Styles */
+        .modal-overlay.profile-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-container {
+            position: relative;
+            width: 600px;
+            max-height: 80vh;
+            background: var(--tertiary-color);
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            overflow-y: auto;
+            padding: 2rem;
+        }
+
+        .modal-container .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .modal-container .close-btn:hover {
+            color: var(--accent-color);
+        }
+
+        .profile-form {
+            width: 100%;
+        }
+
+        .profile-form h3 {
+            color: var(--primary-color);
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .input-box {
+            position: relative;
+            margin: 10px 0;
+            width: 100%;
+        }
+
+        .input-box input, .input-box select {
+            width: 100%;
+            padding: 10px 40px 10px 15px;
+            background: #eee;
+            border-radius: 6px;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            color: #333;
+            font-weight: 500;
+            box-sizing: border-box;
+        }
+
+        .input-box input::placeholder, .input-box select::placeholder {
+            color: #888;
+            font-weight: 400;
+        }
+
+        .input-box i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+        }
+
+        .btn {
+            width: 100%;
+            height: 40px;
+            background: var(--accent-color);
+            border-radius: 6px;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            color: #fff;
+            font-weight: 600;
+            transition: background 0.3s ease;
+        }
+
+        .btn:hover {
+            background: var(--primary-color);
+        }
+
+        /* Logout Popup */
+        .logout-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            display: none;
+            text-align: center;
+            z-index: 1001;
+            width: 90%;
+            max-width: 300px;
+        }
+
+        .logout-popup h2 {
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            font-size: 1.25rem;
+        }
+
+        .logout-popup button {
+            padding: 0.75rem 1.5rem;
+            margin: 0.5rem;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .logout-popup .yes-btn {
+            background: var(--accent-color);
+            color: var(--white);
+        }
+
+        .logout-popup .no-btn {
+            background: var(--text-color);
+            color: var(--white);
+        }
+
+        .logout-popup .yes-btn:hover {
+            background: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .logout-popup .no-btn:hover {
+            background: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .content {
+                margin-left: 80px;
+                width: calc(100% - 80px);
+            }
+
+            .sidebar.expanded ~ .content {
+                margin-left: 200px;
+                width: calc(100% - 200px);
+            }
+
+            .profile-section {
+                padding: 1.5rem;
+            }
+
+            .modal-container {
+                width: 90%;
+                max-width: 400px;
+                padding: 1.5rem;
+            }
+
+            .input-box input, .input-box select {
+                font-size: 13px;
+                padding: 8px 35px 8px 12px;
+            }
+
+            .input-box i {
+                font-size: 16px;
+                right: 12px;
+            }
+
+            .btn {
+                height: 36px;
+                font-size: 13px;
+            }
+
+            .edit-profile-btn {
+                font-size: 0.875rem;
+                padding: 0.5rem 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .content {
+                padding: 1rem;
+            }
+
+            .profile-section {
+                padding: 1rem;
+            }
+
+            .profile-section .profile-details label {
+                width: 120px;
+                font-size: 0.9rem;
+            }
+
+            .profile-section .profile-details span {
+                font-size: 0.9rem;
+            }
+
+            .logout-popup {
+                padding: 1rem;
+            }
+
+            .logout-popup h2 {
+                font-size: 1rem;
+            }
+
+            .logout-popup button {
+                padding: 0.5rem 1rem;
+                font-size: 0.875rem;
+            }
+
+            .modal-container {
+                padding: 1rem;
+            }
+
+            .input-box input, .input-box select {
+                font-size: 12px;
+                padding: 7px 30px 7px 10px;
+            }
+
+            .btn {
+                height: 34px;
+                font-size: 12px;
+            }
+
+            .edit-profile-btn {
+                font-size: 0.75rem;
+                padding: 0.5rem 1rem;
+            }
+
+            .modal-container .close-btn {
+                font-size: 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+    <div id="sidebar-placeholder"></div>
+
+    <div class="content">
+        <div class="profile-section">
+            <h2>User Profile</h2>
+            <div class="profile-details" id="profile-details"></div>
+            <button class="edit-profile-btn">Edit Profile</button>
+            <p class="error-message" id="profile-error" style="display: none;"></p>
+        </div>
+    </div>
+
+
+    <div class="modal-overlay profile-modal">
+        <div class="modal-container">
+            <button class="close-btn" aria-label="Close Modal">×</button>
+            <form id="profileForm" class="profile-form">
+                <h3>Edit Profile</h3>
+                <div class="input-box">
+                    <input type="text" id="profile-fname" placeholder="First Name" required>
+                    <i class='bx bxs-user'></i>
+                </div>
+                <div class="input-box">
+                    <input type="text" id="profile-mname" placeholder="Middle Name">
+                    <i class='bx bxs-user'></i>
+                </div>
+                <div class="input-box">
+                    <input type="text" id="profile-lname" placeholder="Last Name" required>
+                    <i class='bx bxs-user'></i>
+                </div>
+                <div class="input-box">
+                    <input type="text" id="profile-address" placeholder="Address">
+                    <i class='bx bxs-home'></i>
+                </div>
+                <div class="input-box">
+                    <input type="date" id="profile-date-of-birth" placeholder="Date of Birth">
+                    <i class='bx bxs-calendar'></i>
+                </div>
+                <div class="input-box">
+                    <select id="profile-sex">
+                        <option value="">Select Sex</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <i class='bx bxs-user'></i>
+                </div>
+                <div class="input-box">
+                    <select id="profile-civil-status">
+                        <option value="">Select Civil Status</option>
+                        <option value="Single">Single</option>
+                        <option value="Married">Married</option>
+                        <option value="Divorced">Divorced</option>
+                        <option value="Widowed">Widowed</option>
+                    </select>
+                    <i class='bx bxs-user'></i>
+                </div>
+                <div class="input-box">
+                    <input type="text" id="profile-nationality" placeholder="Nationality">
+                    <i class='bx bxs-flag'></i>
+                </div>
+                <div class="input-box">
+                    <input type="text" id="profile-place-of-birth" placeholder="Place of Birth">
+                    <i class='bx bxs-map'></i>
+                </div>
+                <div class="input-box">
+                    <input type="tel" id="profile-contact-number" placeholder="Contact Number">
+                    <i class='bx bxs-phone'></i>
+                </div>
+                <div class="input-box">
+                    <input type="email" id="profile-email-address" placeholder="Email Address">
+                    <i class='bx bxs-envelope'></i>
+                </div>
+                <button type="submit" class="btn">Save Profile</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Logout Popup -->
+    <div class="overlay" onclick="closeLogoutPopup()"></div>
+    <div class="logout-popup">
+        <h2>Are you sure you want to log out?</h2>
+        <button class="yes-btn" onclick="confirmLogout()">Yes</button>
+        <button class="no-btn" onclick="closeLogoutPopup()">No</button>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            // Load header and sidebar
+            $('#header-placeholder').load('Userheader.html');
+            $('#sidebar-placeholder').load('Usersidebar.html');
+
+            // Profile modal functions
+            function showProfileModal() {
+                console.log('showProfileModal called');
+                try {
+                    const $modal = $('.modal-overlay.profile-modal');
+                    $modal.stop(true, true).css({
+                        'display': 'flex',
+                        'opacity': 0
+                    }).animate({ opacity: 1 }, 300);
+                    const profileData = $('#profileForm').data('profile') || {};
+                    $('#profile-fname').val(profileData.fname || '');
+                    $('#profile-mname').val(profileData.mname || '');
+                    $('#profile-lname').val(profileData.lname || '');
+                    $('#profile-address').val(profileData.address || '');
+                    $('#profile-date-of-birth').val(profileData.date_of_birth || '');
+                    $('#profile-sex').val(profileData.sex || '');
+                    $('#profile-civil-status').val(profileData.civil_status || '');
+                    $('#profile-nationality').val(profileData.nationality || '');
+                    $('#profile-place-of-birth').val(profileData.place_of_birth || '');
+                    $('#profile-contact-number').val(profileData.contact_number || '');
+                    $('#profile-email-address').val(profileData.email_address || '');
+                } catch (error) {
+                    console.error('Error in showProfileModal:', error);
+                }
+            }
+
+            function hideProfileModal() {
+                console.log('hideProfileModal called');
+                try {
+                    const $modal = $('.modal-overlay.profile-modal');
+                    $modal.stop(true, true).animate({ opacity: 0 }, 300, function() {
+                        $(this).css('display', 'none');
+                    });
+                } catch (error) {
+                    console.error('Error in hideProfileModal:', error);
+                }
+            }
+
+            // Fetch profile data
+            const userId = sessionStorage.getItem('user_id');
+            const profileDetails = document.getElementById('profile-details');
+            const profileError = document.getElementById('profile-error');
+            const profileForm = $('#profileForm');
+
+            if (!userId) {
+                profileError.innerHTML = 'Error: Please <a href="#" class="login-signup-btn">register or log in</a> to view your profile.';
+                profileError.style.display = 'block';
+                $('.edit-profile-btn').hide();
+                return;
+            }
+
+            $.ajax({
+                url: 'api/profile.php',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    action: 'get_profile',
+                    user_id: userId
+                }),
+                dataType: 'json',
+                success: function(response) {
+                    console.log('Profile fetch response:', response);
+                    if (response.success) {
+                        profileDetails.innerHTML = '';
+                        if (response.data) {
+                            const fields = [
+                                { label: 'First Name', value: response.data.fname || 'Not set' },
+                                { label: 'Middle Name', value: response.data.mname || 'Not set' },
+                                { label: 'Last Name', value: response.data.lname || 'Not set' },
+                                { label: 'Address', value: response.data.address || 'Not set' },
+                                { label: 'Date of Birth', value: response.data.date_of_birth || 'Not set' },
+                                { label: 'Sex', value: response.data.sex || 'Not set' },
+                                { label: 'Civil Status', value: response.data.civil_status || 'Not set' },
+                                { label: 'Nationality', value: response.data.nationality || 'Not set' },
+                                { label: 'Place of Birth', value: response.data.place_of_birth || 'Not set' },
+                                { label: 'Contact Number', value: response.data.contact_number || 'Not set' },
+                                { label: 'Email Address', value: response.data.email_address || 'Not set' }
+                            ];
+
+                            fields.forEach(field => {
+                                const div = document.createElement('div');
+                                div.innerHTML = `
+                                    <label>${field.label}:</label>
+                                    <span>${field.value}</span>
+                                `;
+                                profileDetails.appendChild(div);
+                            });
+                            profileForm.data('profile', response.data);
+                        } else {
+                            profileDetails.innerHTML = '<p>No profile data available. Click "Edit Profile" to create one.</p>';
+                        }
+                        profileError.style.display = 'none';
+                    } else {
+                        profileError.textContent = response.error || 'Error: Unable to fetch profile data.';
+                        profileError.style.display = 'block';
+                        profileDetails.innerHTML = '';
+                        $('.edit-profile-btn').hide();
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX error:', { status, error, xhr });
+                    profileError.textContent = 'Error: Failed to connect to the server.';
+                    profileError.style.display = 'block';
+                    profileDetails.innerHTML = '';
+                    $('.edit-profile-btn').hide();
+                }
+            });
+
+            // Event handlers
+            $(document).on('click', '.edit-profile-btn', function(e) {
+                e.preventDefault();
+                console.log('Edit Profile button clicked');
+                showProfileModal();
+            });
+
+            $(document).on('click', '.close-btn', function() {
+                hideProfileModal();
+            });
+
+            profileForm.on('submit', function(e) {
+                e.preventDefault();
+                console.log('Profile form submitted');
+                const userId = sessionStorage.getItem('user_id');
+                if (!userId) {
+                    alert('Please register or log in to save a profile');
+                    window.openModal(e);
+                    hideProfileModal();
+                    return;
+                }
+
+                const profileData = {
+                    action: 'get_profile',
+                    user_id: userId
+                };
+
+                $.ajax({
+                    url: 'api/profile.php',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(profileData),
+                    dataType: 'json',
+                    success: function(response) {
+                        console.log('Profile check response:', response);
+                        const action = response.data ? 'update_profile' : 'save_profile';
+
+                        $.ajax({
+                            url: 'api/profile.php',
+                            method: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify({
+                                action: action,
+                                user_id: userId,
+                                fname: $('#profile-fname').val(),
+                                mname: $('#profile-mname').val(),
+                                lname: $('#profile-lname').val(),
+                                address: $('#profile-address').val(),
+                                date_of_birth: $('#profile-date-of-birth').val(),
+                                sex: $('#profile-sex').val(),
+                                civil_status: $('#profile-civil-status').val(),
+                                nationality: $('#profile-nationality').val(),
+                                place_of_birth: $('#profile-place-of-birth').val(),
+                                contact_number: $('#profile-contact-number').val(),
+                                email_address: $('#profile-email-address').val()
+                            }),
+                            dataType: 'json',
+                            success: function(saveResponse) {
+                                console.log('Profile save/update response:', saveResponse);
+                                if (saveResponse.success) {
+                                    console.log('Profile saved/updated successfully');
+                                    alert(saveResponse.message || 'Profile saved successfully');
+                                    hideProfileModal();
+                                    window.location.reload();
+                                } else {
+                                    console.warn('Profile save/update failed:', saveResponse.error);
+                                    profileError.textContent = saveResponse.error || 'Failed to save profile';
+                                    profileError.style.display = 'block';
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                console.error('AJAX error:', { status, error, xhr });
+                                profileError.textContent = 'Failed to connect to the server. Please try again.';
+                                profileError.style.display = 'block';
+                            }
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('AJAX error:', { status, error, xhr });
+                        profileError.textContent = 'Failed to check profile status. Please try again.';
+                        profileError.style.display = 'block';
+                    }
+                });
+            });
+        });
+
+        function showLogoutPopup() {
+            document.querySelector('.logout-popup').style.display = 'block';
+            document.querySelector('.overlay').style.display = 'block';
+        }
+
+        function closeLogoutPopup() {
+            document.querySelector('.logout-popup').style.display = 'none';
+            document.querySelector('.overlay').style.display = 'none';
+        }
+
+        function confirmLogout() {
+            sessionStorage.removeItem('user_id');
+            window.location.href = 'OCVET-Homepage.html';
+        }
+
+        function navigateTo(section) {
+            if (section === 'profile') {
+                document.querySelector('.profile-section').classList.add('active');
+            } else if (section === 'dashboard') {
+                window.location.href = 'OCVET-UserDashboard.html';
+            } else if (section === 'appointments') {
+                window.location.href = 'OCVET-Appointment.html';
+            } else if (section === 'pet-records') {
+                window.location.href = 'OCVET-PetRecords.html';
+            } else if (section === 'messages') {
+                window.location.href = 'OCVET-Messages.html';
+            }
+        }
+    </script>
+</body>
+</html>

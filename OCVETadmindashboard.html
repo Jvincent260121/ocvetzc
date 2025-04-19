@@ -8,38 +8,45 @@
 </head>
 <body>
     <div class="sidebar" id="sidebar">
-        <button class="toggle-btn" onclick="toggleSidebar()">
-            <svg class="icon" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18m-18 6h18" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+        <div class="logo-container">
+            <img id="ocvetlogo" src="ocvetlogo.png" alt="OCVET Logo">
+            <span>OCVET</span>
+        </div>
+        <button class="toggle-btn" onclick="toggleSidebar()" aria-label="Toggle Sidebar">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18m-18 6h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
         </button>
-        <a href="#home">
-            <svg class="icon" viewBox="0 0 24 24"><path d="M3 13h2v8h6v-6h2v6h6v-8h2L12 3z" fill="white"/></svg>
+        <a href="#dashboard" onclick="navigateTo('dashboard')" aria-label="Dashboard">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M3 13h2v8h6v-6h2v6h6v-8h2L12 3z" fill="currentColor"/></svg>
             <span>Dashboard</span>
         </a>
-        <a href="#specialPrograms">
-            <svg class="icon" viewBox="0 0 24 24"><path d="M7 11h10M7 15h7M3 8h18M3 4h18v16H3z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span>FAQs</span>
+        <a href="#appointments" onclick="navigateTo('appointments')" aria-label="Appointments">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M7 11h10M7 15h7M3 8h18M3 4h18v16H3z" fill="currentColor"/></svg>
+            <span>Appointments</span>
         </a>
-        <a href="#services">
-            <svg class="icon" viewBox="0 0 24 24"><path d="M12 3l4 7H8l4-7zM4 21c0-4 4-5 8-5s8 1 8 5H4z" fill="white"/></svg>
-            <span>Special Program</span>
+        <a href="#pet-records" onclick="navigateTo('pet-records')" aria-label="Pet Records">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M12 3l4 7H8l4-7zM4 21c0-4 4-5 8-5s8 1 8 5H4z" fill="currentColor"/></svg>
+            <span>Pet Records</span>
         </a>
-        <a href="#news">
-            <svg class="icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span>Announcements</span>
+        <a href="#messages" onclick="navigateTo('messages')" aria-label="Messages">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" fill="currentColor"/></svg>
+            <span>Messages</span>
         </a>
-        <a href="#faqs">
-            <svg class="icon" viewBox="0 0 24 24"><path d="M12 14a7 7 0 0 0-7 7h14a7 7 0 0 0-7-7zm0-2a5 5 0 1 0 0-10 5 5 0 0 0 0 10z" fill="white"/></svg>
+        <a href="#profile" onclick="navigateTo('profile')" aria-label="Profile">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M12 14a7 7 0 0 0-7 7h14a7 7 0 0 0-7-7zm0-2a5 5 0 1 0 0-10 5 5 0 0 0 0 10z" fill="currentColor"/></svg>
             <span>Profile</span>
         </a>
-        <a href="#logout" onclick="showLogoutPopup()">
-            <svg class="icon" viewBox="0 0 24 24"><path d="M16 17l5-5-5-5m-9 5h14m-14 9h14m-14-18h14" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <a href="#logout" onclick="showLogoutPopup()" aria-label="Log Out">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M16 17l5-5-5-5m-9 5h14m-14 9h14m-14-18h14" fill="currentColor"/></svg>
             <span>Log-out</span>
         </a>
     </div>
-    <div class="content">
-        <h1>Welcome to the Dashboard</h1>
-        <p>Manage your appointments, pet records, and messages here.</p>
-    </div>
+
+    <!-- Header -->
+    <header>
+        <h1 id="header-title">User Dashboard</h1>
+    </header>
+
+
     <div class="overlay" onclick="closeLogoutPopup()"></div>
     <div class="logout-popup">
         <h2>Are you sure you want to log out?</h2>

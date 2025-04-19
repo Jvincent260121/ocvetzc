@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCVET Pet Records</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="modal.js"></script>
+    <style>
+        :root {
+            --primary-color: #05234b;
+            --secondary-color: #abc8d0;
+            --tertiary-color: #ebe0d7;
+            --accent-color: #0a8ba8;
+            --background-color: #ece8e5;
+            --white: #ffffff;
+            --text-color: #333333;
+            --error-color: #ff0000;
+            --delete-color: #d32f2f;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background: var(--background-color);
+        }
+
+        /* Content */
+        .content {
+            margin-left: 80px;
+            margin-top: 80px;
+            padding: 2rem;
+            width: calc(100% - 80px);
+            display: flex;
+            justify-content: left;
+            align-items: flex-start;
+            min-height: calc(100vh - 80px);
+            transition: margin-left 0.3s ease, width 0.3s ease;
+        }
+
+        .sidebar.expanded ~ .content {
+            margin-left: 250px;
+            width: calc(100% - 250px);
+        }
+
+        .content h1 {
+            color: var(--primary-color);
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .pet-records-section {
+            background: var(--tertiary-color);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 1500px;
+        }
+
+        .pet-records-section h2 {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .pet-records-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .pet-record {
+            border: 1px solid var(--secondary-color);
+            padding: 1rem;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .pet-record div {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .pet-record label {
+            font-weight: 600;
+            color: var(--primary-color);
+            width: 150px;
+        }
+
+        .pet-record span {
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+
+        .pet-record-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .edit-btn, .delete-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .edit-btn {
+            background: var(--accent-color);
+            color: var(--white);
+        }
+
+        .edit-btn:hover {
+            background: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .delete-btn {
+            background: var(--delete-color);
+            color: var(--white);
+        }
+
+        .delete-btn:hover {
+            background: #b71c1c;
+            transform: translateY(-2px);
+        }
+
+        .add-pet-record-btn {
+            padding: 0.75rem 1.5rem;
+            background: var(--accent-color);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: background 0.3s ease;
+        }
+
+        .add-pet-record-btn:hover {
+            background: var(--primary-color);
+        }
+
+        .error-message {
+            color: var(--error-color);
+            font-size: 1rem;
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .error-message a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .error-message a:hover {
+            text-decoration: underline;
+        }
+
+        .logout-popup, .pet-record-modal, .delete-confirm-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            display: none;
+            text-align: center;
+            z-index: 1001;
+            min-width: 300px;
+        }
+
+        .pet-record-modal {
+            text-align: left;
+            width: 400px;
+            max-width: 90%;
+        }
+
+        .pet-record-modal h2 {
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            font-size: 1.25rem;
+        }
+
+        .pet-record-modal form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            height: 600px;
+        }
+
+        .pet-record-modal label {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .pet-record-modal input, .pet-record-modal select {
+            padding: 0.5rem;
+            border: 1px solid var(--secondary-color);
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+        }
+
+        .pet-record-modal button {
+            padding: 0.75rem;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .pet-record-modal .save-btn {
+            background: var(--accent-color);
+            color: var(--white);
+        }
+
+        .pet-record-modal .cancel-btn {
+            background: var(--text-color);
+            color: var(--white);
+        }
+
+        .pet-record-modal .save-btn:hover {
+            background: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .pet-record-modal .cancel-btn:hover {
+            background: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .delete-confirm-popup h2 {
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            font-size: 1.25rem;
+        }
+
+        .delete-confirm-popup button {
+            padding: 0.75rem 1.5rem;
+            margin: 0.5rem;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .delete-confirm-popup .yes-btn {
+            background: var(--delete-color);
+            color: var(--white);
+        }
+
+        .delete-confirm-popup .no-btn {
+            background: var(--text-color);
+            color: var(--white);
+        }
+
+        .delete-confirm-popup .yes-btn:hover {
+            background: #b71c1c;
+            transform: translateY(-2px);
+        }
+
+        .delete-confirm-popup .no-btn:hover {
+            background: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .logout-popup h2 {
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            font-size: 1.25rem;
+        }
+
+        .logout-popup button {
+            padding: 0.75rem 1.5rem;
+            margin: 0.5rem;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .logout-popup .yes-btn {
+            background: var(--accent-color);
+            color: var(--white);
+        }
+
+        .logout-popup .no-btn {
+            background: var(--text-color);
+            color: var(--white);
+        }
+
+        .logout-popup .yes-btn:hover {
+            background: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .logout-popup .no-btn:hover {
+            background: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            z-index: 1000;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                margin-left: 80px;
+                width: calc(100% - 80px);
+            }
+
+            .sidebar.expanded ~ .content {
+                margin-left: 200px;
+                width: calc(100% - 200px);
+            }
+
+            .profile-section {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .content {
+                padding: 1rem;
+            }
+
+            .profile-section {
+                padding: 1rem;
+            }
+
+            .profile-section .profile-details label {
+                width: 120px;
+                font-size: 0.9rem;
+            }
+
+            .profile-section .profile-details span {
+                font-size: 0.9rem;
+            }
+
+            .logout-popup {
+                padding: 1rem;
+            }
+
+            .logout-popup h2 {
+                font-size: 1rem;
+            }
+
+            .logout-popup button {
+                padding: 0.5rem 1rem;
+                font-size: 0.875rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="header-container"></div>
+    <div id="sidebar-container"></div>
+
+    <div class="content">
+        <div class="pet-records-section">
+            <div class="pet-records-list" id="pet-records-list"></div>
+            <button class="add-pet-record-btn pet-record-btn" onclick="showPetRecordModal('add')">Add Pet Record</button>
+            <p class="error-message" id="pet-records-error" style="display: none;"></p>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="logout-popup" id="logout-popup">
+        <h2>Are you sure you want to log out?</h2>
+        <button class="yes-btn" onclick="confirmLogout()">Yes</button>
+        <button class="no-btn" onclick="closeLogoutPopup()">No</button>
+    </div>
+    <div class="pet-record-modal" id="pet-record-modal">
+        <h2 id="pet-record-modal-title">Add Pet Record</h2>
+        <form id="pet-record-form">
+            <input type="hidden" id="pet-id" name="pet_id">
+            <label for="pet-name">Pet Name:</label>
+            <input type="text" id="pet-name" name="pet_name" required>
+            <label for="species">Species:</label>
+            <input type="text" id="species" name="species" required>
+            <label for="breed">Breed:</label>
+            <input type="text" id="breed" name="breed">
+            <label for="sex">Sex:</label>
+            <select id="sex" name="sex" required>
+                <option value="">Select</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Unknown">Unknown</option>
+            </select>
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" min="0" required>
+            <label for="color-markings">Color/Markings:</label>
+            <input type="text" id="color-markings" name="color_markings">
+            <div>
+                <button type="submit" class="save-btn">Save</button>
+                <button type="button" class="cancel-btn" onclick="closePetRecordModal()">Cancel</button>
+            </div>
+        </form>
+    </div>
+    <div class="delete-confirm-popup" id="delete-confirm-popup">
+        <h2>Are you sure you want to delete this pet record?</h2>
+        <button class="yes-btn" id="confirm-delete-btn">Yes</button>
+        <button class="no-btn" onclick="closeDeleteConfirmPopup()">No</button>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $.get('Userheader.html', function(data) {
+                $('#header-container').html(data);
+            }).fail(function(jqXHR, textStatus, errorThrown) {
+                console.error('Failed to load Userheader.html:', textStatus, errorThrown);
+            });
+
+            $.get('Usersidebar.html', function(data) {
+                $('#sidebar-container').html(data);
+            }).fail(function(jqXHR, textStatus, errorThrown) {
+                console.error('Failed to load Usersidebar.html:', textStatus, errorThrown);
+            });
+
+            const userId = sessionStorage.getItem('user_id');
+            const petRecordsList = document.getElementById('pet-records-list');
+            const petRecordsError = document.getElementById('pet-records-error');
+
+            if (!userId || isNaN(userId) || userId <= 0) {
+                petRecordsError.innerHTML = 'Error: Please <a href="#" class="login-signup-btn">log in</a> to view your pet records.';
+                petRecordsError.style.display = 'block';
+                petRecordsList.innerHTML = '';
+                return;
+            }
+
+            function fetchPetRecords() {
+                $.ajax({
+                    url: 'api/pet_records.php',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        action: 'get_pet_records',
+                        user_id: userId
+                    }),
+                    dataType: 'json',
+                    success: function(response) {
+                        console.log('Pet records fetch response:', response);
+                        if (response.success) {
+                            petRecordsList.innerHTML = '';
+                            if (response.data && response.data.length > 0) {
+                                response.data.forEach(record => {
+                                    const petDiv = document.createElement('div');
+                                    petDiv.className = 'pet-record';
+                                    petDiv.innerHTML = `
+                                        <div><label>Pet Name:</label><span>${record.pet_name || 'Not set'}</span></div>
+                                        <div><label>Species:</label><span>${record.species || 'Not set'}</span></div>
+                                        <div><label>Breed:</label><span>${record.breed || 'Not set'}</span></div>
+                                        <div><label>Sex:</label><span>${record.sex || 'Not set'}</span></div>
+                                        <div><label>Age:</label><span>${record.age || 'Not set'}</span></div>
+                                        <div><label>Color/Markings:</label><span>${record.color_markings || 'Not set'}</span></div>
+                                        <div class="pet-record-actions">
+                                            <button class="edit-btn" onclick='showPetRecordModal("edit", ${JSON.stringify(record)})'>Edit</button>
+                                            <button class="delete-btn" onclick="showDeleteConfirmPopup(${record.id})">Delete</button>
+                                        </div>
+                                    `;
+                                    petRecordsList.appendChild(petDiv);
+                                });
+                            } else {
+                                petRecordsList.innerHTML = '<p>No pet records available. Click "Add Pet Record" to create one.</p>';
+                            }
+                            petRecordsError.style.display = 'none';
+                        } else {
+                            petRecordsError.textContent = response.error || 'Error: Unable to fetch pet records.';
+                            petRecordsError.style.display = 'block';
+                            petRecordsList.innerHTML = '';
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Pet records AJAX error:', { status, error, xhr });
+                        petRecordsError.textContent = 'Error: Failed to connect to the server.';
+                        petRecordsError.style.display = 'block';
+                        petRecordsList.innerHTML = '';
+                    }
+                });
+            }
+
+            fetchPetRecords();
+
+            $('#pet-record-form').on('submit', function(e) {
+                e.preventDefault();
+                if (!userId || isNaN(userId) || userId <= 0) {
+                    petRecordsError.textContent = 'Error: Invalid user session. Please log in again.';
+                    petRecordsError.style.display = 'block';
+                    closePetRecordModal();
+                    return;
+                }
+
+                const petId = $('#pet-id').val();
+                const action = petId ? 'update_pet_record' : 'save_pet_record';
+                const formData = {
+                    action: action,
+                    user_id: userId,
+                    pet_id: petId,
+                    pet_name: $('#pet-name').val().trim(),
+                    species: $('#species').val().trim(),
+                    breed: $('#breed').val().trim(),
+                    sex: $('#sex').val(),
+                    age: parseInt($('#age').val()) || 0,
+                    color_markings: $('#color-markings').val().trim()
+                };
+
+                $.ajax({
+                    url: 'api/pet_records.php',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(formData),
+                    dataType: 'json',
+                    success: function(response) {
+                        console.log(`${action} response:`, response);
+                        if (response.success) {
+                            closePetRecordModal();
+                            fetchPetRecords();
+                            petRecordsError.style.display = 'none';
+                        } else {
+                            petRecordsError.textContent = response.error || `Error: Unable to ${action === 'save_pet_record' ? 'save' : 'update'} pet record.`;
+                            petRecordsError.style.display = 'block';
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(`${action} AJAX error:`, { status, error, xhr });
+                        petRecordsError.textContent = 'Error: Failed to connect to the server.';
+                        petRecordsError.style.display = 'block';
+                    }
+                });
+            });
+        });
+
+        function showLogoutPopup() {
+            document.getElementById('logout-popup').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+        }
+
+        function closeLogoutPopup() {
+            document.getElementById('logout-popup').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        }
+
+        function confirmLogout() {
+            sessionStorage.removeItem('user_id');
+            window.location.href = 'OCVET-Homepage.html';
+        }
+
+        function showPetRecordModal(mode, record = null) {
+            const userId = sessionStorage.getItem('user_id');
+            if (!userId) {
+                document.getElementById('pet-records-error').innerHTML = 'Error: Please <a href="#" class="login-signup-btn">log in</a> to manage pet records.';
+                document.getElementById('pet-records-error').style.display = 'block';
+                return;
+            }
+            const modal = document.getElementById('pet-record-modal');
+            const modalTitle = document.getElementById('pet-record-modal-title');
+            const form = document.getElementById('pet-record-form');
+            form.reset();
+            document.getElementById('pet-id').value = '';
+
+            if (mode === 'edit' && record) {
+                modalTitle.textContent = 'Edit Pet Record';
+                document.getElementById('pet-id').value = record.id;
+                document.getElementById('pet-name').value = record.pet_name || '';
+                document.getElementById('species').value = record.species || '';
+                document.getElementById('breed').value = record.breed || '';
+                document.getElementById('sex').value = record.sex || '';
+                document.getElementById('age').value = record.age || 0;
+                document.getElementById('color-markings').value = record.color_markings || '';
+            } else {
+                modalTitle.textContent = 'Add Pet Record';
+            }
+
+            modal.style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+        }
+
+        function closePetRecordModal() {
+            document.getElementById('pet-record-modal').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        }
+
+        function showDeleteConfirmPopup(petId) {
+            const userId = sessionStorage.getItem('user_id');
+            if (!userId) {
+                document.getElementById('pet-records-error').innerHTML = 'Error: Please <a href="#" class="login-signup-btn">log in</a> to delete pet records.';
+                document.getElementById('pet-records-error').style.display = 'block';
+                return;
+            }
+            document.getElementById('delete-confirm-popup').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('confirm-delete-btn').onclick = function() {
+                deletePetRecord(petId);
+            };
+        }
+
+        function closeDeleteConfirmPopup() {
+            document.getElementById('delete-confirm-popup').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        }
+
+        function deletePetRecord(petId) {
+            const userId = sessionStorage.getItem('user_id');
+            $.ajax({
+                url: 'api/pet_records.php',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    action: 'delete_pet_record',
+                    user_id: userId,
+                    pet_id: petId
+                }),
+                dataType: 'json',
+                success: function(response) {
+                    console.log('Delete pet record response:', response);
+                    if (response.success) {
+                        closeDeleteConfirmPopup();
+                        fetchPetRecords();
+                        document.getElementById('pet-records-error').style.display = 'none';
+                    } else {
+                        document.getElementById('pet-records-error').textContent = response.error || 'Error: Unable to delete pet record.';
+                        document.getElementById('pet-records-error').style.display = 'block';
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Delete pet record AJAX error:', { status, error, xhr });
+                    document.getElementById('pet-records-error').textContent = 'Error: Failed to connect to the server.';
+                    document.getElementById('pet-records-error').style.display = 'block';
+                }
+            });
+        }
+        function navigateTo(section) {
+            if (section === 'profile') {
+                window.location.href = 'OCVET-Profile.html';
+            } else if (section === 'dashboard') {
+                window.location.href = 'OCVET-UserDashboard.html';
+            } else if (section === 'appointments') {
+                window.location.href = 'OCVET-Appointment.html';
+            } else if (section === 'pet-records') {
+                document.querySelector('.pet-records-section').classList.add('active');
+            } else if (section === 'messages') {
+                window.location.href = 'OCVET-Messages.html';
+            }
+        }
+    </script>
+</body>
+</html>

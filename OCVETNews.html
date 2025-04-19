@@ -1,0 +1,95 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Office of the City Veterinarian - Zamboanga City</title>
+    <link rel="stylesheet" href="OCVETProgram.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://db.onlinewebfonts.com/c/b13def851d7a78ce98af9c8bc60e166d?family=Agrandir+Narrow" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="logo-text-wrapper">
+            <img id="ocvetlogo" src="ocvetlogo.png" alt="OCVET Logo">
+            <div class="text-container">
+                <h1><strong>OFICINA DE VETERENARIO CIUDAD DE ZAMBOANGA</strong></h1>
+                <p><em>Office of the City Veterinarian, Zamboanga City</em></p>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <div class="nav-links">
+            <a href="OCVET-Homepage.html">HOME</a>
+            <a href="OCVET-aboutUs.html">ABOUT US</a>
+            <a href="OCVET-faqs.php">FAQs</a>
+            <a href="OCVET-Program">SPECIAL PROGRAMS</a>
+            <a href="OCVETNews.html" class="active">NEWS</a>
+            <a href="#" class="login-signup-btn" onclick="openModal(event)">LOGIN / SIGN UP</a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="news">
+            <div class="news-container">
+                <h2>Latest News</h2>
+                <div id="news-list">
+                    <!-- News items will be dynamically inserted here -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="OCVETjs.js"></script>
+    <script src="modal.js"></script>
+    <script>
+        $(document).ready(function() {
+            let navOffset = $('nav').offset().top;
+            $(window).scroll(function() {
+                if ($(window).scrollTop() >= navOffset) {
+                    $('nav').addClass('fixed');
+                } else {
+                    $('nav').removeClass('fixed');
+                }
+            });
+        });
+
+        function displayNews() {
+            let newsList;
+            try {
+                newsList = JSON.parse(localStorage.getItem('newsList')) || [];
+            } catch (e) {
+                console.error('Error parsing newsList:', e);
+                newsList = [];
+            }
+            const newsContainer = document.getElementById('news-list');
+            newsContainer.innerHTML = '';
+
+            if (newsList.length === 0) {
+                newsContainer.innerHTML = '<p>No news available.</p>';
+                return;
+            }
+
+            newsList.forEach(news => {
+                const newsItem = document.createElement('div');
+                newsItem.className = 'news-item';
+                newsItem.innerHTML = `
+                    ${news.photo ? `<img src="${news.photo}" alt="${news.title || 'News item'}" class="news-photo">` : ''}
+                    <h3>${news.title || 'Untitled'}</h3>
+                    <p>${news.description || 'No description'}</p>
+                    <span class="news-date">Posted on: ${news.date || 'Unknown date'}</span>
+                `;
+                newsContainer.appendChild(newsItem);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', displayNews);
+    </script>
+</body>
+</html>
+ 

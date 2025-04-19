@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Office of the City Veterinarian - Zamboanga City</title>
+    <link rel="stylesheet" href="OCVETProgram.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://db.onlinewebfonts.com/c/b13def851d7a78ce98af9c8bc60e166d?family=Agrandir+Narrow" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="logo-text-wrapper">
+            <img id="ocvetlogo" src="ocvetlogo.png" alt="OCVET Logo">
+            <div class="text-container">
+                <h1><strong>OFICINA DE VETERENARIO CIUDAD DE ZAMBOANGA</strong></h1>
+                <p><em>Office of the City Veterinarian, Zamboanga City</em></p>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <div class="nav-links">
+            <a href="OCVET-Homepage.html">HOME</a>
+            <a href="OCVET-aboutUs.html">ABOUT US</a>
+            <a href="OCVET-faqs.php">FAQs</a>
+            <a href="OCVET-Program.html" class="active">SPECIAL PROGRAMS</a>
+            <a href="OCVETNews.html">NEWS</a>
+            <a href="#" class="login-signup-btn" onclick="openModal(event)">LOGIN / SIGN UP</a>
+        </div>
+        <div class="nav-search">
+            
+        </div>
+    </nav>
+
+    <main>
+        <section class="special-programs">
+            <div class="special-programs-container">
+                <h2>Latest Special Programs</h2>
+                <div id="news-list">
+                    <!-- Special program items will be dynamically inserted here -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="OCVETjs.js"></script>
+    <script src="modal.js"></script>
+    <script>
+        $(document).ready(function() {
+            let navOffset = $('nav').offset().top;
+            $(window).scroll(function() {
+                if ($(window).scrollTop() >= navOffset) {
+                    $('nav').addClass('fixed');
+                } else {
+                    $('nav').removeClass('fixed');
+                }
+            });
+        });
+
+        function displayPrograms() {
+            const programList = JSON.parse(localStorage.getItem('specialProgramsList')) || [];
+            const programContainer = document.getElementById('news-list');
+            programContainer.innerHTML = '';
+
+            if (programList.length === 0) {
+                programContainer.innerHTML = '<p>No special programs available.</p>';
+                return;
+            }
+
+            programList.forEach(program => {
+                const programItem = document.createElement('div');
+                programItem.className = 'news-item';
+                programItem.innerHTML = `
+                    ${program.photo ? `<img src="${program.photo}" alt="${program.title}" class="news-photo">` : ''}
+                    <h3>${program.title}</h3>
+                    <p>${program.description}</p>
+                    <span class="news-date">Posted on: ${program.date}</span>
+                    <a href="#" class="learn-more-btn">Learn More</a>
+                `;
+                programContainer.appendChild(programItem);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', displayPrograms);
+    </script>
+</body>
+</html>

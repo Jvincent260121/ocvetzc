@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #05234b;
+            --secondary-color: #abc8d0;
+            --accent-color: #0a8ba8;
+            --white: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 80px;
+            background: var(--secondary-color);
+            padding: 1.5rem 0.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            transition: width 0.3s ease;
+            height: 100vh;
+            z-index: 999;
+            overflow-y: auto;
+        }
+
+        .sidebar.expanded {
+            width: 250px;
+        }
+
+        .sidebar .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem 0;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar .logo-container img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+        }
+
+        .sidebar .logo-container span {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .sidebar.expanded .logo-container span {
+            display: block;
+        }
+
+        .sidebar a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.75rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            white-space: nowrap;
+        }
+
+        .sidebar a:hover {
+            background: var(--accent-color);
+            color: var(--white);
+        }
+
+        .sidebar a:hover .icon {
+            fill: var(--white);
+        }
+
+        .sidebar:not(.expanded) a span {
+            display: none;
+        }
+
+        .sidebar:not(.expanded) a {
+            justify-content: center;
+        }
+
+        .toggle-btn {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: color 0.3s ease;
+            display: flex;
+            justify-content: center;
+            margin: 10px 0;
+        }
+
+        .toggle-btn:hover {
+            color: var(--accent-color);
+        }
+
+        .icon {
+            width: 24px;
+            height: 24px;
+            fill: var(--primary-color);
+            transition: fill 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 80px;
+            }
+
+            .sidebar a span {
+                display: none;
+            }
+
+            .sidebar.expanded {
+                width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <div class="logo-container">
+            <img id="ocvetlogo" src="ocvetlogo.png" alt="OCVET Logo">
+            <span>OCVET</span>
+        </div>
+        <button class="toggle-btn" onclick="toggleSidebar()" aria-label="Toggle Sidebar">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18m-18 6h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+        <a href="#dashboard" onclick="navigateTo('dashboard')" aria-label="Dashboard">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M3 13h2v8h6v-6h2v6h6v-8h2L12 3z" fill="currentColor"/></svg>
+            <span>Dashboard</span>
+        </a>
+        <a href="#appointments" onclick="navigateTo('appointments')" aria-label="Appointments">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M7 11h10M7 15h7M3 8h18M3 4h18v16H3z" fill="currentColor"/></svg>
+            <span>Appointments</span>
+        </a>
+        <a href="#pet-records" onclick="navigateTo('pet-records')" aria-label="Pet Records">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M12 3l4 7H8l4-7zM4 21c0-4 4-5 8-5s8 1 8 5H4z" fill="currentColor"/></svg>
+            <span>Pet Records</span>
+        </a>
+        <a href="#messages" onclick="navigateTo('messages')" aria-label="Messages">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" fill="currentColor"/></svg>
+            <span>Messages</span>
+        </a>
+        <a href="#profile" onclick="navigateTo('profile')" aria-label="Profile">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M12 14a7 7 0 0 0-7 7h14a7 7 0 0 0-7-7zm0-2a5 5 0 1 0 0-10 5 5 0 0 0 0 10z" fill="currentColor"/></svg>
+            <span>Profile</span>
+        </a>
+        <a href="#logout" onclick="showLogoutPopup()" aria-label="Log Out">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M16 17l5-5-5-5m-9 5h14m-14 9h14m-14-18h14" fill="currentColor"/></svg>
+            <span>Log-out</span>
+        </a>
+    </div>
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>

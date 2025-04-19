@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #05234b;
+            --secondary-color: #abc8d0;
+            --background-color: #ece8e5;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: linear-gradient(rgba(236, 232, 229, 0.2), rgba(236, 232, 229, 0.2)), url('OCVETheadbar.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: var(--primary-color);
+            padding: 1.5rem;
+            width: calc(100% - 80px);
+            margin-left: 80px;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            height: 80px;
+            display: flex;
+            align-items: center;
+            transition: width 0.3s ease, margin-left 0.3s ease;
+        }
+
+        .sidebar.expanded ~ header {
+            width: calc(100% - 250px);
+            margin-left: 250px;
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                width: calc(100% - 80px);
+                margin-left: 80px;
+            }
+
+            .sidebar.expanded ~ header {
+                width: calc(100% - 200px);
+                margin-left: 200px;
+            }
+
+            header h1 {
+                font-size: 1.25rem;
+            }
+        }
+
+        body:has(.sidebar.expanded) header {
+            width: calc(100% - 250px) !important;
+            margin-left: 250px !important;
+        }
+
+        body:has(.sidebar.expanded) .content {
+            width: calc(100% - 250px) !important;
+            margin-left: 250px !important;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 id="header-title">User Dashboard</h1>
+    </header>
+
+    <script>
+        function initializeHeader() {
+            const headerTitle = document.getElementById('header-title');
+
+            // Debugging: Check if headerTitle is found
+            if (!headerTitle) {
+                console.error('Error: Element with ID "header-title" not found in the DOM.');
+                console.log('DOM content:', document.body.innerHTML);
+                return;
+            }
+
+            const userId = sessionStorage.getItem('user_id');
+            const cachedUsername = sessionStorage.getItem('username');
+
+            if (cachedUsername) {
+                headerTitle.textContent = `${cachedUsername}'s Dashboard`;
+                console.log('Using cached username:', cachedUsername);
+                return;
+            }
+
+            if (userId) {
+                $.ajax({
+                    url: 'api/get_username.php',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        action: 'get_user',
+                        user_id: userId
+                    }),
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.success && response.username) {
+                            headerTitle.textContent = `${response.username}'s Dashboard`;
+                            sessionStorage.setItem('username', response.username);
+                            console.log('Fetched username:', response.username);
+                        } else {
+                            headerTitle.textContent = 'User Dashboard';
+                            console.warn('Failed to fetch username:', response.error || 'No username returned');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        headerTitle.textContent = 'User Dashboard';
+                        console.error('Username fetch AJAX error:', { status, error, xhr });
+                        console.log('Raw response:', xhr.responseText);
+                    }
+                });
+            } else {
+                headerTitle.textContent = 'Guest Dashboard';
+                console.log('No user_id found in sessionStorage');
+            }
+        }
+
+        // Run initialization when DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeHeader();
+        });
+
+        // Retry initialization after a short delay to handle dynamic includes
+        setTimeout(initializeHeader, 100);
+    </script>
+</body>
+</html>

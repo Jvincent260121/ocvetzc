@@ -21,18 +21,7 @@
             </div>
         </div>
 
-        <div class="search-container">
-            <div class="container">
-                <input type="text" name="text" class="search" placeholder="Type to search..." aria-label="Search">
-                <div class="icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
-                        <title>Search</title>
-                        <path d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"></path>
-                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M338.29 338.29L448 448"></path>
-                    </svg>
-                </div>
-            </div>
-        </div>
+        
     </header>
 
     <nav>
@@ -46,7 +35,7 @@
             <a href="OCVET-faqs.php">FAQs</a>
             <a href="#programs">SPECIAL PROGRAMS</a>
             <a href="#news">NEWS</a>
-            <a href="#" class="login-signup-btn" onclick="openModal(event)">LOGIN / SIGN UP</a>
+            <a href="#" class="login-signup-btn">LOGIN / SIGN UP</a>
         </div>
         <div class="nav-search">
             <!-- This will be populated with the search-container when scrolled -->
@@ -59,7 +48,7 @@
             <div id="paragraph">
                 <h1><em>“WE CARE FOR YOUR PETS<br>AS WE WOULD OUR OWN”</em></h1>
             </div>
-            <button type="button" class="login-signup-btn" id="apt-btn" aria-label="Book an appointment with OCVET">BOOK AN APPOINTMENT</button>
+            <button type="button" id="apt-btn" aria-label="Book an appointment with OCVET">BOOK AN APPOINTMENT</button>
             <p class="contact-number"><strong>Or give us a call at</strong> (062) 985 0247</p>
         </div>
     </section>
@@ -183,7 +172,7 @@
                     <li><a href="http://www.facebook.com/ocvet" target="_blank">Facebook</a></li>
                     <li><a href="#instagram" target="_blank">Instagram</a></li>
                     <li><a href="#x" target="_blank">X</a></li>
-                    <li><a href="#youtube" target="_blank">YouTube</a></li>
+                    <li><a href="#youtube" target="_blank">YouTube Souds></a>
                 </ul>
             </div>
             <div class="footer-logos">
@@ -198,10 +187,8 @@
         </div>
     </footer>
 
-    <div id="modal-content"></div>
-
     <script src="OCVETjs.js"></script>
-    <script src="modal.js"></script>  
+    <script src="modal.js"></script>
     <script>
         $(document).ready(function() {
             $.ajax({
@@ -232,14 +219,19 @@
                     $('#faqs-grid').html('<div class="faq-item"><span class="faq-number">1.</span><p>Error loading FAQs.</p></div>');
                 }
             });
-        });
 
+            // Handle Book Appointment button (placeholder)
+            $('#apt-btn').on('click', function(e) {
+                e.preventDefault();
+                openModal(e); // Redirect to login modal for now; update if booking-specific logic is needed
+            });
+        });
 
         function goToAboutUs() {
             window.location.href = 'OCVET-aboutUs.html';
         }
-        
-        function goToFaqs() {   
+
+        function goToFaqs() {
             window.location.href = 'OCVET-faqs.php';
         }
     </script>
